@@ -41,17 +41,32 @@ void enableRawMode() {
   if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr");
 }
 
+char editorReadKey() {
+  int nread;
+  char c;
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+    if (nread == -1 && errno != EAGAIN) die("read");
+  }
+
+  return c;
+}
+
 /*** input ***/
 
 void editorProcessKeypress() {
-  char c = '\0';
-  if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) die("read");
+  char c = editorReadKey();
+
   if (iscntrl(c)) {
     printf("%d\r\n", c);
   } else {
     printf("%d ('%c')\r\n", c, c);
   }
-  if (c == CTRL_KEY('q')) break; // TODO: break while (1)
+
+  switch (c) {
+    case CTRL_KEY('q'):
+      exit(0);
+      break;
+  }
 }
 
 /*** init ***/
