@@ -61,7 +61,7 @@ char editorReadKey() {
   return c;
 }
 
-int getCursorPosition(/* int *rows, int *cols */) {
+int getCursorPosition(int *rows, int *cols) {
   char buf[32];
   unsigned int i = 0;
 
@@ -74,11 +74,10 @@ int getCursorPosition(/* int *rows, int *cols */) {
   }
   buf[i] = '\0';
 
-  printf("\r\n&buf[1]: '%s'\r\n", &buf[1]);
+  if (buf[0] != '\x1b' || buf[1] != '[') return -1;
+  if (sscanf(&buf[2], "%d;%d", rows, cols) != 2) return -1;
 
-  editorReadKey(); // TEMP
-
-  return -1;
+  return 0;
 }
 
 int getWindowSize(int *rows, int *cols) {
@@ -86,7 +85,7 @@ int getWindowSize(int *rows, int *cols) {
 
   if (1 || ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
     if (write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) return -1;
-    return getCursorPosition(/* rows, cols */);
+    return getCursorPosition(rows, cols);
   } else {
     *cols = ws.ws_col;
     *rows = ws.ws_row;
