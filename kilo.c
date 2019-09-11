@@ -201,7 +201,7 @@ void editorDrawRows(struct abuf *ab) {
       if (y == E.screenrows / 3) {
         char welcome[80];
         int welcomelen = snprintf(welcome, sizeof(welcome), "Kilo editor -- version %s", KILO_VERSION);
-        if (welcomelen > E.screencols) welcomelen = E.screencols;
+        if (welcomelen > E.screencols) welcomelen = E.screencols; // FIXME: wrap
         int padding = (E.screencols - welcomelen) / 2;
         if (padding) {
           abAppend(ab, "~", 1);
@@ -214,7 +214,7 @@ void editorDrawRows(struct abuf *ab) {
       }
     } else {
       int len = E.row.size;
-      if (len > E.screencols) len = E.screencols;
+      if (len > E.screencols) len = E.screencols; // FIXME: wrap
       abAppend(ab, E.row.chars, len);
     }
 
