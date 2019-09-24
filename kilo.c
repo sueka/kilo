@@ -162,11 +162,14 @@ int getWindowSize(int *rows, int *cols) {
 /*** row operations ***/
 
 void editorAppendRow(char *line, size_t linelen) {
-  E.row.size = linelen;
-  E.row.chars = malloc(linelen + 1); // TODO: delete? ` + 1`
-  memcpy(E.row.chars, line, linelen);
-  E.row.chars[linelen] = '\0';
-  E.numrows = 1;
+  E.row = realloc(E.row, sizeof(erow) * (E.numrows + 1));
+
+  int at = E.numrows;
+  E.row[at].size = linelen;
+  E.row[at].chars = malloc(linelen + 1); // TODO: delete? ` + 1`
+  memcpy(E.row[at].chars, line, linelen);
+  E.row[at].chars[linelen] = '\0';
+  E.numrows++;
 }
 
 /*** file i/o ***/
