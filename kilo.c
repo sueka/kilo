@@ -293,9 +293,9 @@ void editorMoveCursor(int key) {
       }
       break;
     case ARROW_RIGHT:
-      if (E.cx < E.screencols - 1) {
+      // if (E.cx < E.numcols) { // E.numcols: the number of charcters of the longest row
         E.cx++;
-      }
+      // }
       break;
     case ARROW_UP:
       if (E.cy > 0) {
