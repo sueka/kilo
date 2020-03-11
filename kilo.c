@@ -173,6 +173,10 @@ void editorAppendRow(char *line, size_t linelen) {
   E.row[at].chars = malloc(linelen + 1); // TODO: delete? ` + 1`
   memcpy(E.row[at].chars, line, linelen);
   E.row[at].chars[linelen] = '\0';
+
+  E.row[at].rsize = 0;
+  E.row[at].render = NULL;
+
   E.numrows++;
 }
 
