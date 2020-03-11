@@ -17,6 +17,7 @@
 /*** defines ***/
 
 #define KILO_VERSION "0.0.1"
+#define KILO_TAB_STOP 8
 
 #define CTRL_KEY(k) ((k) & 0x1F)
 
@@ -173,13 +174,13 @@ void editorUpdateRow(erow *row) {
   }
 
   free(row->render);
-  row->render = malloc(row->size + 7 * tabs + 1); // FIXME
+  row->render = malloc(row->size + (KILO_TAB_STOP - 1) * tabs + 1); // FIXME
 
   int idx = 0;
   for (j = 0; j < row->size; ++j) {
     if (row->chars[j] == '\t') {
       row->render[idx++] = ' ';
-      while (idx % 8 != 0) row->render[idx++] = ' ';
+      while (idx % KILO_TAB_STOP != 0) row->render[idx++] = ' ';
     } else {
       row->render[idx++] = row->chars[j];
     }
